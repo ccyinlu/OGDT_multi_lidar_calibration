@@ -1,0 +1,57 @@
+<launch>
+    <arg name="data_root" default="/home/bingo/ethan/multi-lidar-calibration/dataset/prescan/scene_plane/aloam" />
+    <arg name="bag_root" default="/media/bingo/SSD/multi_lidar_calib_data/prescan/scene_motion_plane_rosbag" />
+    <arg name="lidar_pcd_map_res" default="0.1" />
+
+    <arg name="rosbag_filename" default="$(arg bag_root)/multi_lidar_calib.bag" />
+    <arg name="rosbag_playrate" default="1" />
+    <param name="record_lidarPose_path" value="true" />
+    <param name="lidarPose_path_filename" value="$(arg data_root)/lidar4_aloam_lidarPose_path.txt" />
+    <param name="lidar_pcd_map_res" value="$(arg lidar_pcd_map_res)" />
+    <param name="lidar_pcd_map_filename" value="$(arg data_root)/lidar4_aloam_line32_res_$(arg lidar_pcd_map_res).pcd" />
+    <arg name="rviz" default="true" />
+
+    <param name="lidar_topic" type="string" value="/lidar4/points_raw"/>
+
+    <!-- remove too closed points -->
+    <param name="minimum_range" type="double" value="0.3"/>
+
+    <param name="/use_sim_time" value="false" />
+    <param name="use_ekf_pose" value="false" />
+    <param name="scan_line" type="int" value="32" />
+
+    <param name="record_gnss_path" value="false" />
+    <param name="gnss_path_filename" value="$(arg data_root)/lidar4_aloam_gnss_path.txt" />
+
+    <!-- if 1, do mapping 10 Hz, if 2, do mapping 5 Hz. Suggest to use 1, it will adjust frequence automaticlly -->
+    <param name="mapping_skip_frame" type="int" value="1" />
+
+    <param name="mapping_line_resolution" type="double" value="0.2"/>
+    <param name="mapping_plane_resolution" type="double" value="0.4"/>
+    
+    <param name="lidar_points_range_min" type="double" value="3"/>
+    <param name="lidar_points_range_max" type="double" value="200"/>
+
+    <param name="laser2baselink_tf_x" type="double" value="0.0" />
+    <param name="laser2baselink_tf_y" type="double" value="0.0" />
+    <param name="laser2baselink_tf_z" type="double" value="0.0" />
+    <param name="laser2baselink_tf_roll" type="double" value="0.0"/>
+    <param name="laser2baselink_tf_pitch" type="double" value="0.0" />
+    <param name="laser2baselink_tf_yaw" type="double" value="0.0" />
+
+    <node pkg="aloam_velodyne" type="ascanRegistration" name="ascanRegistration" output="screen" />
+
+    <node pkg="aloam_velodyne" type="alaserOdometry" name="alaserOdometry" output="screen" />
+
+    <node pkg="aloam_velodyne" type="alaserMapping" name="alaserMapping" output="screen" />
+
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find aloam_velodyne)/rviz_cfg/aloam_velodyne_lidar4.rviz" />
+    </group>
+
+    <!-- rosbag -->
+    <node name="rosbag_player" type="play" pkg="rosbag" output="screen"  args="--clock $(arg rosbag_filename) -r $(arg rosbag_playrate)">
+        <!-- <remap from="/lidar2/points_raw" to="/velodyne_points" /> -->
+    </node>
+
+</launch>

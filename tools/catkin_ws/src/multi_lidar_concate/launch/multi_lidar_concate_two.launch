@@ -1,0 +1,63 @@
+<!-- -->
+<launch>
+    <param name ="/use_sim_time" value="true"/>
+
+    <arg name="data_root" default="/media/bingo/CCYINLU/DATA/sharingVAN/sharingVAN-4/2020-03-28-12-20-57-partial" />
+
+    <arg name="use_intensity_render" default="true" />
+
+    <arg name="use_yaml_config" default="true" />
+    <arg name="lidar_child_yaml_path" default="$(arg data_root)/lidar_1_to_2_estimated_6dof.txt" />
+
+    <arg name="output_frame" default="ls" />
+    <arg name="lidar_parent_topic" default="/lidar2/points_raw" />
+    <arg name="lidar_child_topic" default="/lidar1/points_raw" />
+    <arg name="concat_points_topic" default="/points_concat" />
+
+    <!-- lidar3 to lidar2 -->
+    <!-- <arg name="transform_child2parent_x" default="0.1265" />
+    <arg name="transform_child2parent_y" default="1.5728" />
+    <arg name="transform_child2parent_z" default="-0.3782" />
+    <arg name="transform_child2parent_roll" default="-3.1056" />
+    <arg name="transform_child2parent_pitch" default="-3.1350" />
+    <arg name="transform_child2parent_yaw" default="1.6305" /> -->
+
+    <!-- lidar1 to lidar2 -->
+    <arg name="transform_child2parent_x" default="-0.3805" />
+    <arg name="transform_child2parent_y" default="-0.9690" />
+    <arg name="transform_child2parent_z" default="-0.3281" />
+    <arg name="transform_child2parent_roll" default="0.0326" />
+    <arg name="transform_child2parent_pitch" default="0.0317" />
+    <arg name="transform_child2parent_yaw" default="1.5318" />
+
+    <arg name="rosbag_filename" default="$(arg data_root)/lidar_calib.bag" />
+    <arg name="rosbag_playrate" default="1" />
+
+    <node pkg="multi_lidar_concate" type="multi_lidar_concate_two" name="multi_lidar_concate_two" output="screen">
+        <param name="use_intensity_render" value="$(arg use_intensity_render)" />
+        <param name="use_yaml_config" value="$(arg use_yaml_config)" />
+        <param name="lidar_child_yaml_path" value="$(arg lidar_child_yaml_path)" />
+
+        <param name="output_frame" value="$(arg output_frame)" />
+        <param name="lidar_parent_topic" value="$(arg lidar_parent_topic)" />
+        <param name="lidar_child_topic" value="$(arg lidar_child_topic)" />
+        <param name="concat_points_topic" value="$(arg concat_points_topic)" />
+
+        <param name="transform_child2parent_x" value="$(arg transform_child2parent_x)" />
+        <param name="transform_child2parent_y" value="$(arg transform_child2parent_y)" />
+        <param name="transform_child2parent_z" value="$(arg transform_child2parent_z)" />
+        <param name="transform_child2parent_roll" value="$(arg transform_child2parent_roll)" />
+        <param name="transform_child2parent_pitch" value="$(arg transform_child2parent_pitch)" />
+        <param name="transform_child2parent_yaw" value="$(arg transform_child2parent_yaw)" />
+    </node>
+
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find multi_lidar_concate)/rviz/multi_lidar_concate_two.rviz" />
+    </group>
+
+    <!-- rosbag -->
+    <node name="rosbag_player" type="play" pkg="rosbag" output="screen"  args="--clock $(arg rosbag_filename) -r $(arg rosbag_playrate)">
+        <!-- <remap from="/lidar2/points_raw" to="/velodyne_points" /> -->
+    </node>
+</launch>

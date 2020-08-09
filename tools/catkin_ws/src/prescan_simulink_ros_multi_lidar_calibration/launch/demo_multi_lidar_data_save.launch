@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- <arg name="data_root" default="/home/bingo/ethan/multi-lidar-calibration/Dataset/prescan/scene1_gt" /> -->
+  <arg name="data_root" default="/media/bingo/SSD/multi_lidar_calib_data/prescan/scene_motion_plane_raw" />
+  <arg name="lidar_front_topic" default="/lidar2/points_raw" />
+  <arg name="lidar_left_topic" default="/lidar1/points_raw" />
+  <arg name="lidar_right_topic" default="/lidar3/points_raw" />
+  <arg name="lidar_back_topic" default="/lidar4/points_raw" />
+
+  <arg name="vehicle_status_pose_topic" default="/vehicle_status_pose" />
+
+  <arg name="lidar_front_pose_relative_topic" default="/lidar_front_pose_relative" />
+  <arg name="lidar_left_pose_relative_topic" default="/lidar_left_pose_relative" />
+  <arg name="lidar_right_pose_relative_topic" default="/lidar_right_pose_relative" />
+  <arg name="lidar_back_pose_relative_topic" default="/lidar_back_pose_relative" />
+
+  <arg name="ros_to_pcl_method" default="fromNumpy" /> <!-- fromNumpy or fromList -->
+  
+  <node name="multi_lidar_data_save" pkg="prescan_simulink_ros_multi_lidar_calibration" type="multi_lidar_data_save.py" output="screen">
+	<param name="data_root" value="$(arg data_root)"/>
+	
+  <param name="lidar_front_topic" value="$(arg lidar_front_topic)"/>
+  <param name="lidar_left_topic" value="$(arg lidar_left_topic)"/>
+  <param name="lidar_right_topic" value="$(arg lidar_right_topic)"/>
+  <param name="lidar_back_topic" value="$(arg lidar_back_topic)"/>
+
+  <param name="vehicle_status_pose_topic" value="$(arg vehicle_status_pose_topic)"/>
+	
+  <param name="lidar_front_pose_relative_topic" value="$(arg lidar_front_pose_relative_topic)"/>
+  <param name="lidar_left_pose_relative_topic" value="$(arg lidar_left_pose_relative_topic)"/>
+  <param name="lidar_right_pose_relative_topic" value="$(arg lidar_right_pose_relative_topic)"/>
+  <param name="lidar_back_pose_relative_topic" value="$(arg lidar_back_pose_relative_topic)"/>
+
+	<param name="ros_to_pcl_method" value="$(arg ros_to_pcl_method)"/>
+  </node>
+
+</launch>

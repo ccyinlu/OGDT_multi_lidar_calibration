@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <name>prescan_simulink_ros_multi_lidar_calibration</name>
+  <version>1.0.0</version>
+  <description>
+    Metapackage allowing easy installation of prescan_simulink_ros components.
+  </description>
+
+  <license>GNU GPLv2</license>
+  <author>Ethan</author>
+  <maintainer email="ccyinlu@whu.edu.cn">Ethan</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_depend>rostest</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <run_depend>message_runtime</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+  <export>
+    <!-- <metapackage/> -->
+  </export>
+
+</package>

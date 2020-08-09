@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="data_root" default="/media/bingo/CCYINLU/DATA/sharingVAN/sharing-van-1.0plus/2#/20200505/manual" />
+
+  <node name="multi_lidar_concate_ui_node" pkg="multi_lidar_concate_ui" type="multi_lidar_concate_ui_node" output="screen">
+    <param name="lidar_child_yaml_path" value="$(arg data_root)lidar_1_to_2_estimated_6dof.txt" />
+  </node>
+
+</launch>

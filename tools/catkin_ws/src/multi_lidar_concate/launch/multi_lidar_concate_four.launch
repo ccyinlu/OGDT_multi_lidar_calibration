@@ -1,0 +1,82 @@
+<!-- -->
+<launch>
+    <param name ="/use_sim_time" value="false"/>
+
+    <arg name="data_root" default="/home/bingo/ethan/multi-lidar-calibration/Dataset/prescan/scene1_gt_sync" />
+
+    <arg name="use_intensity_render" default="true" />
+
+    <arg name="use_yaml_config" default="true" />
+    <arg name="lidar_child_1_yaml_path" default="$(arg data_root)/lidar_1_to_2_gt_6dof.txt" />
+    <arg name="lidar_child_2_yaml_path" default="$(arg data_root)/lidar_3_to_2_gt_6dof.txt" />
+    <arg name="lidar_child_3_yaml_path" default="$(arg data_root)/lidar_4_to_2_gt_6dof.txt" />
+
+    <arg name="output_frame" default="ls" />
+    <arg name="lidar_parent_topic" default="/lidar2/points_raw" />
+    <arg name="lidar_child1_topic" default="/lidar1/points_raw" />
+    <arg name="lidar_child2_topic" default="/lidar3/points_raw" />
+    <arg name="lidar_child3_topic" default="/lidar4/points_raw" />
+    <arg name="concat_points_topic" default="/points_concat" />
+
+    <!-- 以下数据是在对齐的时候求得的, 对应8号车数据 -->
+    <!-- lidar1 to lidar2 -->
+    <arg name="transform_child1_2parent_x" default="-0.3749" />
+    <arg name="transform_child1_2parent_y" default="-0.1422" />
+    <arg name="transform_child1_2parent_z" default="-0.3072" />
+    <arg name="transform_child1_2parent_roll" default="0.0328" />
+    <arg name="transform_child1_2parent_pitch" default="0.0319" />
+    <arg name="transform_child1_2parent_yaw" default="1.5344" />
+
+    <!-- lidar3 to lidar2 -->
+    <arg name="transform_child2_2parent_x" default="0.1887" />
+    <arg name="transform_child2_2parent_y" default="-0.3266" />
+    <arg name="transform_child2_2parent_z" default="-0.2693" />
+    <arg name="transform_child2_2parent_roll" default="-3.1071" />
+    <arg name="transform_child2_2parent_pitch" default="-3.1330" />
+    <arg name="transform_child2_2parent_yaw" default="1.6234" />
+
+    <!-- lidar4 to lidar2 -->
+    <arg name="transform_child3_2parent_x" default="-0.1480" />
+    <arg name="transform_child3_2parent_y" default="-4.1910" />
+    <arg name="transform_child3_2parent_z" default="-0.0706" />
+    <arg name="transform_child3_2parent_roll" default="-3.0779" />
+    <arg name="transform_child3_2parent_pitch" default="3.1239" />
+    <arg name="transform_child3_2parent_yaw" default="0.0181" />
+
+    <node pkg="multi_lidar_concate" type="multi_lidar_concate_four" name="multi_lidar_concate_four" output="screen">
+        <param name="use_intensity_render" value="$(arg use_intensity_render)" />
+        <param name="use_yaml_config" value="$(arg use_yaml_config)" />
+        <param name="lidar_child_1_yaml_path" value="$(arg lidar_child_1_yaml_path)" />
+        <param name="lidar_child_2_yaml_path" value="$(arg lidar_child_2_yaml_path)" />
+        <param name="lidar_child_3_yaml_path" value="$(arg lidar_child_3_yaml_path)" />
+
+        <param name="output_frame" value="$(arg output_frame)" />
+        <param name="lidar_parent_topic" value="$(arg lidar_parent_topic)" />
+        <param name="concat_points_topic" value="$(arg concat_points_topic)" />
+        <param name="lidar_child1_topic" value="$(arg lidar_child1_topic)" />
+        <param name="lidar_child2_topic" value="$(arg lidar_child2_topic)" />
+        <param name="lidar_child3_topic" value="$(arg lidar_child3_topic)" />
+
+        <param name="transform_child1_2parent_x" value="$(arg transform_child1_2parent_x)" />
+        <param name="transform_child1_2parent_y" value="$(arg transform_child1_2parent_y)" />
+        <param name="transform_child1_2parent_z" value="$(arg transform_child1_2parent_z)" />
+        <param name="transform_child1_2parent_roll" value="$(arg transform_child1_2parent_roll)" />
+        <param name="transform_child1_2parent_pitch" value="$(arg transform_child1_2parent_pitch)" />
+        <param name="transform_child1_2parent_yaw" value="$(arg transform_child1_2parent_yaw)" />
+
+        <param name="transform_child2_2parent_x" value="$(arg transform_child2_2parent_x)" />
+        <param name="transform_child2_2parent_y" value="$(arg transform_child2_2parent_y)" />
+        <param name="transform_child2_2parent_z" value="$(arg transform_child2_2parent_z)" />
+        <param name="transform_child2_2parent_roll" value="$(arg transform_child2_2parent_roll)" />
+        <param name="transform_child2_2parent_pitch" value="$(arg transform_child2_2parent_pitch)" />
+        <param name="transform_child2_2parent_yaw" value="$(arg transform_child2_2parent_yaw)" />
+
+        <param name="transform_child3_2parent_x" value="$(arg transform_child3_2parent_x)" />
+        <param name="transform_child3_2parent_y" value="$(arg transform_child3_2parent_y)" />
+        <param name="transform_child3_2parent_z" value="$(arg transform_child3_2parent_z)" />
+        <param name="transform_child3_2parent_roll" value="$(arg transform_child3_2parent_roll)" />
+        <param name="transform_child3_2parent_pitch" value="$(arg transform_child3_2parent_pitch)" />
+        <param name="transform_child3_2parent_yaw" value="$(arg transform_child3_2parent_yaw)" />
+    </node>
+
+</launch>
