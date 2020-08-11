@@ -1,9 +1,7 @@
 % get the trajectory relative from the absolute
-clc;
-close all;
 
 if ~exist('data_root')
-    data_root = '/media/bingo/SSD/multi_lidar_calib_data/sharingVAN/20200706/lidar_calibration';
+    data_root = '/media/bingo/SSD/multi_lidar_calib_data/sharingVAN/ch32_4';
 end
 
 addpath('../interface');
@@ -36,8 +34,8 @@ if ~exist('lidar_back_path')
   lidar_back_path = 'lidar_back';
 end
 
-if ~exist('current_index')
-  current_index = 1;
+if ~exist('shot_id')
+  shot_id = 1;
 end
 
 % [roll pitch yaw x y z] [degree degree degree meters meters meters]
@@ -59,10 +57,10 @@ transform_matrix_right_to_front_final = transform_matrix_from_pose(lidar_right_t
 transform_matrix_back_to_front_final = transform_matrix_from_pose(lidar_back_to_front_pose_final);
 
 % load the current lidar points
-current_lidar_front_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_front_path, current_index);
-current_lidar_left_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_left_path, current_index);
-current_lidar_right_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_right_path, current_index);
-current_lidar_back_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_back_path, current_index);
+current_lidar_front_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_front_path, shot_id);
+current_lidar_left_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_left_path, shot_id);
+current_lidar_right_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_right_path, shot_id);
+current_lidar_back_pcd_filename = sprintf('%s/%s/%06d.pcd', data_root, lidar_back_path, shot_id);
 
 current_lidar_front_pcd = pcread(current_lidar_front_pcd_filename);
 current_lidar_left_pcd = pcread(current_lidar_left_pcd_filename);
@@ -101,7 +99,7 @@ color_gray_level = 1;
 %% show the concated points before
 limits = [-100 100 -100 100 -100 100];
 Ilimits = [0 255];
-fig_before = figure(1);
+fig_before = figure();
 axes_before = axes(...
                         'Parent', fig_before, ...
                         'Units', 'Normalized', ...
@@ -139,12 +137,13 @@ hold on;
 pointsShow(axes_before, current_lidar_right_points_transformed_before, limits, Ilimits, 'plain', pointSize, [0, 0, 0.5]);
 hold on;
 pointsShow(axes_before, current_lidar_back_points_transformed_before, limits, Ilimits, 'plain', pointSize, [0.5, 0.5, 0]);
+title('concate before calibration');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% show the concated points final
 limits = [-100 100 -100 100 -100 100];
 Ilimits = [0 255];
-fig_final = figure(2);
+fig_final = figure();
 axes_final = axes(...
                         'Parent', fig_final, ...
                         'Units', 'Normalized', ...
@@ -182,3 +181,4 @@ hold on;
 pointsShow(axes_final, current_lidar_right_points_transformed_final, limits, Ilimits, 'plain', pointSize, [0, 0, 0.5]);
 hold on;
 pointsShow(axes_final, current_lidar_back_points_transformed_final, limits, Ilimits, 'plain', pointSize, [0.5, 0.5, 0]);
+title('concate after calibration');
